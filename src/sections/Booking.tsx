@@ -141,7 +141,7 @@ export function Booking() {
             <div
               ref={cardRef}
               id="booking-form"
-              className="card scroll-mt-20 overflow-hidden p-5 sm:p-6 md:p-10"
+              className="card mx-auto w-full max-w-[760px] scroll-mt-20 overflow-hidden p-5 sm:p-6 md:p-10"
             >
               <AnimatePresence mode="wait">
                 {done ? (
@@ -202,10 +202,12 @@ function StepService({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="space-y-4"
+      className="mx-auto w-full max-w-[560px] space-y-4"
     >
-      <div className="label-kicker">Шаг 1 из 3</div>
-      <h3 className="font-display text-2xl text-ink sm:text-3xl">Выберите программу</h3>
+      <div className="text-center sm:text-left">
+        <div className="label-kicker">Шаг 1 из 3</div>
+        <h3 className="font-display text-2xl text-ink sm:text-3xl">Выберите программу</h3>
+      </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {services.map((s) => (
           <button
@@ -268,10 +270,12 @@ function StepSlot({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="space-y-5"
+      className="mx-auto w-full max-w-[560px] space-y-5"
     >
-      <div className="label-kicker">Шаг 2 из 3</div>
-      <h3 className="font-display text-2xl text-ink sm:text-3xl">Когда вам удобно?</h3>
+      <div className="text-center sm:text-left">
+        <div className="label-kicker">Шаг 2 из 3</div>
+        <h3 className="font-display text-2xl text-ink sm:text-3xl">Когда вам удобно?</h3>
+      </div>
 
       <div className="relative">
         <div
@@ -387,10 +391,12 @@ function StepContacts({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="space-y-5"
+      className="mx-auto w-full max-w-[560px] space-y-5"
     >
-      <div className="label-kicker">Шаг 3 из 3</div>
-      <h3 className="font-display text-2xl text-ink sm:text-3xl">Как с вами связаться?</h3>
+      <div className="text-center sm:text-left">
+        <div className="label-kicker">Шаг 3 из 3</div>
+        <h3 className="font-display text-2xl text-ink sm:text-3xl">Как с вами связаться?</h3>
+      </div>
 
       <div className="rounded-2xl bg-sand-50 p-4 text-sm text-ink/75">
         <div className="font-display text-ink">{service}</div>
