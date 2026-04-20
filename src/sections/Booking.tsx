@@ -254,7 +254,14 @@ function StepSlot({
 }) {
   const [date, setDate] = useState<string>(selectedDate ?? schedule[0].date);
   const [time, setTime] = useState<string | undefined>(selectedTime);
+  const datesRef = useRef<HTMLDivElement>(null);
   const day = schedule.find((d) => d.date === date)!;
+
+  function scrollDates(delta: number) {
+    const el = datesRef.current;
+    if (!el) return;
+    el.scrollBy({ left: delta, behavior: "smooth" });
+  }
 
   return (
     <motion.div
@@ -268,7 +275,8 @@ function StepSlot({
 
       <div className="relative">
         <div
-          className="no-scrollbar fade-right-mask flex w-full gap-2 overflow-x-auto pb-2 pr-8"
+          ref={datesRef}
+          className="no-scrollbar flex w-full gap-2 overflow-x-auto pb-2 pr-16"
           style={{ WebkitOverflowScrolling: "touch", scrollBehavior: "smooth" }}
         >
           {schedule.map((d) => (
@@ -291,7 +299,25 @@ function StepSlot({
             </button>
           ))}
         </div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-sand-100 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-14 w-8 bg-gradient-to-l from-sand-100 to-transparent" />
+        <div className="absolute right-0 top-1/2 z-10 flex -translate-y-1/2 gap-1">
+          <button
+            type="button"
+            aria-label="Прокрутить даты влево"
+            onClick={() => scrollDates(-180)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-ink/20 bg-sand-50 text-ink shadow-sm active:scale-95"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            type="button"
+            aria-label="Прокрутить даты вправо"
+            onClick={() => scrollDates(180)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-ink/20 bg-sand-50 text-ink shadow-sm active:scale-95"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-4">
@@ -317,7 +343,7 @@ function StepSlot({
       <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center">
         <button
           onClick={onBack}
-          className="btn-outline w-full sm:w-auto sm:flex-none"
+          className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border border-ink/25 bg-sand-50 px-5 py-3 text-base font-medium text-ink active:scale-95 sm:w-auto"
         >
           <ChevronLeft size={16} /> Назад
         </button>
@@ -325,7 +351,7 @@ function StepSlot({
           disabled={!time}
           onClick={() => time && onPick(date, time)}
           className={cn(
-            "btn-primary w-full sm:w-auto sm:flex-none",
+            "inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-base font-medium text-copper active:scale-95 sm:w-auto",
             !time && "opacity-40 cursor-not-allowed pointer-events-none",
           )}
         >
@@ -425,14 +451,14 @@ function StepContacts({
         <button
           type="button"
           onClick={onBack}
-          className="btn-outline w-full sm:w-auto sm:flex-none"
+          className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border border-ink/25 bg-sand-50 px-5 py-3 text-base font-medium text-ink active:scale-95 sm:w-auto"
         >
           <ChevronLeft size={16} /> Назад
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="btn-primary w-full sm:w-auto sm:flex-none"
+          className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-base font-medium text-copper active:scale-95 sm:w-auto"
         >
           Отправить заявку <Sparkles size={16} />
         </button>
