@@ -10,6 +10,7 @@ import { Contacts } from "./sections/Contacts";
 import { Footer } from "./sections/Footer";
 import { Chatbot } from "./components/Chatbot";
 import { FloatingCTA } from "./components/FloatingCTA";
+import { BookingToasts } from "./components/BookingToasts";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <Footer />
         <Chatbot />
         <FloatingCTA />
+        <BookingToasts />
       </div>
     </BookingProvider>
   );

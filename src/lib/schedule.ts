@@ -89,3 +89,50 @@ export function getFreeSlots(limit = 5): { date: string; label: string; time: st
   }
   return free;
 }
+
+export type UpcomingSlot = {
+  date: string;
+  label: string;
+  time: string;
+  datetime: Date;
+  isToday: boolean;
+  isTomorrow: boolean;
+};
+
+export function getNextUpcomingSlot(now: Date = new Date()): UpcomingSlot | null {
+  const schedule = generateSchedule();
+  const todayStr = formatDate(now);
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() + 1);
+  const tomorrowStr = formatDate(tomorrow);
+
+  for (const day of schedule) {
+    for (const slot of day.slots) {
+      if (slot.booked) continue;
+      const [h, m] = slot.time.split(":").map(Number);
+      const [yy, mm, dd] = day.date.split("-").map(Number);
+      const slotDate = new Date(yy, mm - 1, dd, h, m, 0, 0);
+      if (slotDate.getTime() - now.getTime() < 30 * 60 * 1000) continue;
+      return {
+        date: day.date,
+        label: `${day.weekday}, ${day.label}`,
+        time: slot.time,
+        datetime: slotDate,
+        isToday: day.date === todayStr,
+        isTomorrow: day.date === tomorrowStr,
+      };
+    }
+  }
+  return null;
+}
+
+export function formatCountdown(target: Date, now: Date = new Date()): string {
+  const diff = Math.max(0, target.getTime() - now.getTime());
+  const totalMin = Math.floor(diff / 60000);
+  const days = Math.floor(totalMin / (60 * 24));
+  const hours = Math.floor((totalMin % (60 * 24)) / 60);
+  const minutes = totalMin % 60;
+  if (days > 0) return `через ${days} дн. ${hours} ч`;
+  if (hours > 0) return `через ${hours} ч ${minutes} мин`;
+  return `через ${minutes} мин`;
+}

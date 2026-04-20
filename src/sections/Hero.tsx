@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowDownRight, Sparkles } from "lucide-react";
 import { useBooking } from "@/context/BookingContext";
+import { NextSlotBanner } from "@/components/NextSlotBanner";
 
 const metrics = [
   { value: "8+", label: "лет практики" },
@@ -47,6 +48,10 @@ export function Hero() {
             <a href="#services" className="btn-outline text-base">
               Программы и цены
             </a>
+          </div>
+
+          <div className="mt-8">
+            <NextSlotBanner />
           </div>
         </motion.div>
 
