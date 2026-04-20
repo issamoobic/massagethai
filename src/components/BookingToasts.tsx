@@ -122,7 +122,10 @@ export function BookingToasts() {
   }
 
   return (
-    <div className="pointer-events-none fixed bottom-24 left-4 z-40 md:bottom-6 md:left-6">
+    <div
+      className="pointer-events-none fixed left-4 z-40 md:left-6"
+      style={{ bottom: "max(6rem, calc(env(safe-area-inset-bottom) + 5rem))" }}
+    >
       <AnimatePresence>
         {toast && (
           <motion.div

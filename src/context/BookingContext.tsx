@@ -21,9 +21,10 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     if (v) setIntent(v);
     queueMicrotask(() => {
       const el = document.getElementById("booking");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      if (!el) return;
+      const navH = window.innerWidth < 768 ? 64 : 80;
+      const y = el.getBoundingClientRect().top + window.scrollY - navH;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
     });
   }, []);
 

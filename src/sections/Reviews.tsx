@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import reviews from "@/data/reviews.json";
@@ -6,12 +6,26 @@ import reviews from "@/data/reviews.json";
 export function Reviews() {
   const [i, setI] = useState(0);
   const r = reviews[i];
+  const touchStart = useRef<number | null>(null);
 
   const prev = () => setI((v) => (v - 1 + reviews.length) % reviews.length);
   const next = () => setI((v) => (v + 1) % reviews.length);
 
+  function onTouchStart(e: React.TouchEvent) {
+    touchStart.current = e.touches[0].clientX;
+  }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStart.current == null) return;
+    const delta = e.changedTouches[0].clientX - touchStart.current;
+    if (Math.abs(delta) > 50) {
+      if (delta < 0) next();
+      else prev();
+    }
+    touchStart.current = null;
+  }
+
   return (
-    <section id="reviews" className="relative py-16 md:py-36">
+    <section id="reviews" className="relative overflow-hidden py-16 md:py-36">
       <div className="container-x">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
           <div>
@@ -28,7 +42,11 @@ export function Reviews() {
 
         <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-7">
-            <div className="relative min-h-[280px]">
+            <div
+              className="relative min-h-[280px] touch-pan-y select-none"
+              onTouchStart={onTouchStart}
+              onTouchEnd={onTouchEnd}
+            >
               <AnimatePresence mode="wait">
                 <motion.blockquote
                   key={r.id}
@@ -57,17 +75,17 @@ export function Reviews() {
               </AnimatePresence>
             </div>
 
-            <div className="mt-10 flex items-center gap-4">
+            <div className="mt-8 flex items-center gap-3 md:mt-10 md:gap-4">
               <button
                 onClick={prev}
-                className="grid h-12 w-12 place-items-center rounded-full border border-ink/20 text-ink hover:border-copper hover:text-copper"
+                className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-ink/20 text-ink hover:border-copper hover:text-copper active:scale-95"
                 aria-label="Предыдущий отзыв"
               >
                 <ChevronLeft size={20} />
               </button>
               <button
                 onClick={next}
-                className="grid h-12 w-12 place-items-center rounded-full border border-ink/20 text-ink hover:border-copper hover:text-copper"
+                className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-ink/20 text-ink hover:border-copper hover:text-copper active:scale-95"
                 aria-label="Следующий отзыв"
               >
                 <ChevronRight size={20} />

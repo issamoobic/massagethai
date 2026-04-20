@@ -62,6 +62,16 @@ export function Chatbot() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, open]);
 
+  useEffect(() => {
+    const isMobile = window.innerWidth < 640;
+    if (open && isMobile) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+    return () => document.body.classList.remove("no-scroll");
+  }, [open]);
+
   function pushBot(text: string, component?: React.ReactNode) {
     setMessages((m) => [...m, { id: uid(), from: "bot", text, component }]);
   }
@@ -98,7 +108,7 @@ export function Chatbot() {
           <button
             key={o.id}
             onClick={() => handleQuizAnswer(step, o)}
-            className="rounded-full border border-ink/15 bg-sand-50 px-3 py-1.5 text-xs text-ink hover:border-copper hover:text-copper"
+            className="min-h-[36px] rounded-full border border-ink/15 bg-sand-50 px-3.5 py-2 text-sm text-ink hover:border-copper hover:text-copper active:scale-95"
           >
             {o.label}
           </button>
@@ -139,7 +149,7 @@ export function Chatbot() {
       `Рекомендую — ${best.name} (${best.duration} мин, ${best.price.toLocaleString("ru-RU")} ₽). ${best.shortDescription}`,
       <div className="mt-2 flex flex-wrap gap-2">
         <button
-          className="btn-primary !py-2 !px-4 !text-xs"
+          className="btn-primary !min-h-[40px] !px-4 !py-2 !text-sm"
           onClick={() => {
             scrollToBooking({ serviceId: best.id });
             setOpen(false);
@@ -148,7 +158,7 @@ export function Chatbot() {
           Записаться на эту программу
         </button>
         <button
-          className="btn-outline !py-2 !px-4 !text-xs"
+          className="btn-outline !min-h-[40px] !px-4 !py-2 !text-sm"
           onClick={() => {
             setMode("idle");
             pushBot("", <QuickReplies onPick={handleQuickReply} />);
@@ -174,14 +184,14 @@ export function Chatbot() {
               scrollToBooking({ date: slot.date, time: slot.time });
               setOpen(false);
             }}
-            className="flex w-full items-center justify-between rounded-xl border border-ink/10 bg-sand-50 px-3 py-2 text-left text-xs text-ink hover:border-copper"
+            className="flex min-h-[44px] w-full items-center justify-between rounded-xl border border-ink/10 bg-sand-50 px-3 py-2.5 text-left text-sm text-ink hover:border-copper active:scale-[0.98]"
           >
             <span>{slot.label}</span>
-            <span className="font-display text-sm text-copper">{slot.time}</span>
+            <span className="font-display text-base text-copper">{slot.time}</span>
           </button>
         ))}
         <button
-          className="btn-ghost !text-xs"
+          className="btn-ghost !text-sm"
           onClick={() => pushBot("", <QuickReplies onPick={handleQuickReply} />)}
         >
           ← Меню
@@ -197,21 +207,21 @@ export function Chatbot() {
         {services.map((s) => (
           <div
             key={s.id}
-            className="flex items-center justify-between rounded-xl border border-ink/10 bg-sand-50 px-3 py-2 text-xs text-ink"
+            className="flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-sand-50 px-3 py-2.5 text-sm text-ink"
           >
-            <div>
-              <div className="font-medium">{s.name}</div>
+            <div className="min-w-0">
+              <div className="truncate font-medium">{s.name}</div>
               <div className="text-[10px] uppercase tracking-wider text-ink/50">
                 {s.duration} мин · {s.category}
               </div>
             </div>
-            <div className="font-display text-sm text-copper">
+            <div className="shrink-0 font-display text-base text-copper">
               {s.price.toLocaleString("ru-RU")} ₽
             </div>
           </div>
         ))}
         <button
-          className="btn-ghost !text-xs"
+          className="btn-ghost !text-sm"
           onClick={() => pushBot("", <QuickReplies onPick={handleQuickReply} />)}
         >
           ← Меню
@@ -250,10 +260,13 @@ export function Chatbot() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-ink px-5 py-4 text-sand-100 shadow-soft"
+            aria-label="Открыть ассистент"
+            className="fixed right-5 z-50 flex h-14 w-14 items-center justify-center gap-2 rounded-full bg-ink text-sand-100 shadow-soft md:h-auto md:w-auto md:px-5 md:py-4"
+            style={{ bottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
           >
-            <MessageSquare size={18} />
+            <MessageSquare size={20} />
             <span className="hidden md:inline">Ассистент</span>
             <span className="absolute -top-1 -right-1 grid h-4 w-4 place-items-center rounded-full bg-copper text-[10px] text-sand-50">
               1
@@ -265,13 +278,13 @@ export function Chatbot() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 40, scale: 0.95 }}
+            exit={{ opacity: 0, y: 40, scale: 0.98 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-6 right-6 z-50 flex h-[min(620px,calc(100vh-3rem))] w-[min(400px,calc(100vw-3rem))] flex-col overflow-hidden rounded-3xl bg-sand-100 shadow-soft"
+            className="fixed inset-x-0 bottom-0 top-0 z-50 flex flex-col overflow-hidden bg-sand-100 shadow-soft sm:inset-auto sm:bottom-6 sm:right-6 sm:top-auto sm:h-[min(620px,calc(100vh-3rem))] sm:w-[min(400px,calc(100vw-3rem))] sm:rounded-3xl"
           >
-            <header className="flex items-center justify-between bg-ink p-5 text-sand-100">
+            <header className="safe-top flex items-center justify-between bg-ink p-4 text-sand-100 sm:p-5">
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-copper text-sand-50">
                   <Sparkles size={16} />
@@ -285,14 +298,14 @@ export function Chatbot() {
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="text-sand-200/80 hover:text-sand-50"
+                className="grid h-11 w-11 place-items-center rounded-full text-sand-200/80 hover:text-sand-50 active:bg-ink-700"
                 aria-label="Закрыть"
               >
-                <X size={18} />
+                <X size={20} />
               </button>
             </header>
 
-            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-5">
+            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4 sm:p-5" style={{ WebkitOverflowScrolling: "touch" }}>
               {messages.map((m) => (
                 <div
                   key={m.id}
@@ -315,21 +328,21 @@ export function Chatbot() {
 
             <form
               onSubmit={handleSend}
-              className="border-t border-ink/10 bg-sand-50 p-3"
+              className="safe-bottom border-t border-ink/10 bg-sand-50 p-3"
             >
-              <div className="flex items-center gap-2 rounded-full border border-ink/15 bg-sand-100 px-4 py-2">
+              <div className="flex items-center gap-2 rounded-full border border-ink/15 bg-sand-100 pl-4 pr-1.5 py-1.5">
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Напишите сообщение…"
-                  className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink/40 focus:outline-none"
+                  className="flex-1 bg-transparent text-base text-ink placeholder:text-ink/40 focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="grid h-8 w-8 place-items-center rounded-full bg-copper text-sand-50 hover:bg-ink"
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-copper text-sand-50 hover:bg-ink active:scale-95"
                   aria-label="Отправить"
                 >
-                  <Send size={14} />
+                  <Send size={16} />
                 </button>
               </div>
             </form>
@@ -347,7 +360,7 @@ function QuickReplies({ onPick }: { onPick: (id: string) => void }) {
         <button
           key={q.id}
           onClick={() => onPick(q.id)}
-          className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-sand-100 px-3 py-1.5 text-xs text-ink hover:border-copper hover:text-copper"
+          className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-ink/15 bg-sand-100 px-3.5 py-2 text-sm text-ink hover:border-copper hover:text-copper active:scale-95"
         >
           {quickIcons[q.id]} {q.label}
         </button>

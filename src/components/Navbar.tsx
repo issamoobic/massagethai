@@ -21,6 +21,11 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.classList.toggle("no-scroll", open);
+    return () => document.body.classList.remove("no-scroll");
+  }, [open]);
+
   const handleClick = (href: string) => {
     setOpen(false);
     const el = document.querySelector(href);
@@ -94,19 +99,16 @@ export function Navbar() {
         </div>
 
         <button
-          className="md:hidden"
-          aria-label="Меню"
+          className="-mr-2 grid h-11 w-11 shrink-0 place-items-center rounded-full text-ink md:hidden"
+          aria-label={open ? "Закрыть меню" : "Открыть меню"}
+          aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg width="26" height="26" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5">
             {open ? (
-              <>
-                <path d="M6 6l16 16M22 6L6 22" />
-              </>
+              <path d="M6 6l16 16M22 6L6 22" />
             ) : (
-              <>
-                <path d="M4 9h20M4 19h20" />
-              </>
+              <path d="M4 9h20M4 19h20" />
             )}
           </svg>
         </button>
@@ -116,9 +118,9 @@ export function Navbar() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden bg-sand-50 border-t border-ink/10"
+          className="safe-bottom max-h-[calc(100vh-56px)] overflow-y-auto border-t border-ink/10 bg-sand-50 md:hidden"
         >
-          <div className="container-x flex flex-col gap-4 py-6">
+          <div className="container-x flex flex-col gap-1 py-4">
             {nav.map((n) => (
               <a
                 key={n.href}
@@ -127,7 +129,7 @@ export function Navbar() {
                   e.preventDefault();
                   handleClick(n.href);
                 }}
-                className="text-ink/80"
+                className="rounded-2xl px-3 py-3 text-base text-ink/80 hover:bg-sand-100 active:bg-sand-200"
               >
                 {n.label}
               </a>
@@ -138,7 +140,7 @@ export function Navbar() {
                 e.preventDefault();
                 handleClick("#booking");
               }}
-              className="btn-primary self-start"
+              className="btn-primary mt-3 w-full"
             >
               Записаться
             </a>

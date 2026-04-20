@@ -4,7 +4,7 @@ import master from "@/data/master.json";
 
 export function About() {
   return (
-    <section id="about" className="relative py-16 md:py-40">
+    <section id="about" className="relative overflow-hidden py-16 md:py-40">
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-12 md:gap-20">
           <motion.div

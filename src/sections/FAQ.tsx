@@ -7,7 +7,7 @@ export function FAQ() {
   const [open, setOpen] = useState<string | null>(faqs[0].id);
 
   return (
-    <section id="faq" className="relative py-16 md:py-36">
+    <section id="faq" className="relative overflow-hidden py-16 md:py-36">
       <div className="container-x grid gap-8 md:grid-cols-12 md:gap-12">
         <div className="md:col-span-4">
           <span className="label-kicker">Вопросы и ответы</span>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Clock, Coins, X, ArrowUpRight, Leaf } from "lucide-react";
 import services from "@/data/services.json";
@@ -113,6 +113,17 @@ export function Services() {
 
 function ServiceModal({ service, onClose }: { service: Service; onClose: () => void }) {
   const { scrollToBooking } = useBooking();
+
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.classList.remove("no-scroll");
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -132,9 +143,9 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
         <button
           onClick={onClose}
           aria-label="Закрыть"
-          className="absolute right-4 top-4 z-10 rounded-full bg-sand-50 p-2 text-ink hover:bg-copper hover:text-sand-50"
+          className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center rounded-full bg-sand-50 text-ink shadow-soft hover:bg-copper hover:text-sand-50 active:scale-95"
         >
-          <X size={18} />
+          <X size={20} />
         </button>
         <div className="bg-ink p-6 pr-14 text-sand-100 sm:p-8 md:p-10">
           <div className="label-kicker !text-coral">{service.subtitle}</div>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,6 +33,20 @@ export function Booking() {
   const [date, setDate] = useState<string | undefined>(intent.date);
   const [time, setTime] = useState<string | undefined>(intent.time);
   const [done, setDone] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  function goToStep(next: number) {
+    setStep(next);
+    queueMicrotask(() => {
+      const el = cardRef.current;
+      if (!el) return;
+      const navH = window.innerWidth < 768 ? 72 : 88;
+      const y = el.getBoundingClientRect().top + window.scrollY - navH;
+      if (window.scrollY > y + 8) {
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+      }
+    });
+  }
 
   const {
     register,
@@ -79,7 +93,7 @@ export function Booking() {
   }
 
   return (
-    <section id="booking" className="relative py-16 md:py-36">
+    <section id="booking" className="relative overflow-hidden py-16 md:py-36">
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-12 md:gap-12">
           <div className="md:col-span-5">
@@ -117,7 +131,7 @@ export function Booking() {
           </div>
 
           <div className="md:col-span-7">
-            <div className="card overflow-hidden p-5 sm:p-6 md:p-10">
+            <div ref={cardRef} className="card scroll-mt-20 overflow-hidden p-5 sm:p-6 md:p-10">
               <AnimatePresence mode="wait">
                 {done ? (
                   <Success key="done" onNew={resetAll} service={service?.name} date={date} time={time} />
@@ -127,7 +141,7 @@ export function Booking() {
                     selected={serviceId}
                     onSelect={(id) => {
                       setServiceId(id);
-                      setStep(1);
+                      goToStep(1);
                     }}
                   />
                 ) : step === 1 ? (
@@ -136,11 +150,11 @@ export function Booking() {
                     schedule={schedule}
                     selectedDate={date}
                     selectedTime={time}
-                    onBack={() => setStep(0)}
+                    onBack={() => goToStep(0)}
                     onPick={(d, t) => {
                       setDate(d);
                       setTime(t);
-                      setStep(2);
+                      goToStep(2);
                     }}
                   />
                 ) : (
@@ -152,7 +166,7 @@ export function Booking() {
                     register={register}
                     errors={errors}
                     isSubmitting={isSubmitting}
-                    onBack={() => setStep(1)}
+                    onBack={() => goToStep(1)}
                     onSubmit={handleSubmit(onSubmitContacts)}
                   />
                 )}
@@ -241,7 +255,7 @@ function StepSlot({
       <div className="label-kicker">Шаг 2 из 3</div>
       <h3 className="font-display text-2xl text-ink sm:text-3xl">Когда вам удобно?</h3>
 
-      <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:px-6">
+      <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-5 px-5 pb-2 sm:-mx-6 sm:scroll-px-6 sm:px-6">
         {schedule.map((d) => (
           <button
             key={d.date}
@@ -250,15 +264,15 @@ function StepSlot({
               setTime(undefined);
             }}
             className={cn(
-              "flex min-w-[72px] flex-col items-center rounded-2xl border px-3 py-3 transition",
+              "flex min-w-[76px] shrink-0 snap-start flex-col items-center rounded-2xl border px-3 py-3 transition active:scale-95",
               date === d.date
-                ? "border-copper bg-copper text-sand-50"
+                ? "border-copper bg-copper text-sand-50 shadow-glow"
                 : "border-ink/10 text-ink hover:border-copper/50",
             )}
           >
-            <span className="text-xs uppercase tracking-widest">{d.weekday}</span>
-            <span className="mt-1 font-display text-xl">{d.label.split(" ")[0]}</span>
-            <span className="text-[10px] opacity-70">{d.label.split(" ")[1]}</span>
+            <span className="text-[11px] uppercase tracking-widest">{d.weekday}</span>
+            <span className="mt-1 font-display text-2xl leading-none">{d.label.split(" ")[0]}</span>
+            <span className="mt-0.5 text-[10px] opacity-70">{d.label.split(" ")[1]}</span>
           </button>
         ))}
       </div>
@@ -270,9 +284,9 @@ function StepSlot({
             disabled={s.booked}
             onClick={() => setTime(s.time)}
             className={cn(
-              "rounded-xl border px-3 py-3 text-sm transition",
+              "min-h-[48px] rounded-xl border px-3 py-3 text-base font-medium transition active:scale-95",
               s.booked
-                ? "border-ink/5 bg-sand-50 text-ink/30 line-through cursor-not-allowed"
+                ? "border-ink/5 bg-sand-50 text-ink/30 line-through cursor-not-allowed active:scale-100"
                 : time === s.time
                   ? "border-ink bg-ink text-sand-100"
                   : "border-ink/15 text-ink hover:border-copper",
@@ -342,13 +356,26 @@ function StepContacts({
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="label-kicker mb-2 block">Имя</label>
-          <input className="input" placeholder="Ваше имя" {...register("name")} />
-          {errors.name && <p className="mt-1 text-xs text-coral">{errors.name.message}</p>}
+          <input
+            className="input"
+            placeholder="Ваше имя"
+            autoComplete="name"
+            autoCapitalize="words"
+            {...register("name")}
+          />
+          {errors.name && <p className="mt-1.5 text-sm text-coral">{errors.name.message}</p>}
         </div>
         <div>
           <label className="label-kicker mb-2 block">Телефон</label>
-          <input className="input" placeholder="+7 (___) ___-__-__" {...register("phone")} />
-          {errors.phone && <p className="mt-1 text-xs text-coral">{errors.phone.message}</p>}
+          <input
+            className="input"
+            placeholder="+7 (___) ___-__-__"
+            type="tel"
+            autoComplete="tel"
+            inputMode="tel"
+            {...register("phone")}
+          />
+          {errors.phone && <p className="mt-1.5 text-sm text-coral">{errors.phone.message}</p>}
         </div>
       </div>
 
@@ -363,7 +390,7 @@ function StepContacts({
       </div>
 
       <label className="flex items-start gap-3 text-sm text-ink/70">
-        <input type="checkbox" className="mt-1" {...register("consent")} />
+        <input type="checkbox" className="mt-1 h-5 w-5 accent-copper" {...register("consent")} />
         <span>
           Согласен(а) с{" "}
           <a href="#" className="text-copper underline">
@@ -372,7 +399,7 @@ function StepContacts({
           .
         </span>
       </label>
-      {errors.consent && <p className="text-xs text-coral">{errors.consent.message}</p>}
+      {errors.consent && <p className="text-sm text-coral">{errors.consent.message}</p>}
 
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
         <button type="button" onClick={onBack} className="btn-ghost">

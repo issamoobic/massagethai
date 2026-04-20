@@ -40,12 +40,12 @@ export function Hero() {
             травяные мешочки — в тишине, без конвейера, 90+ минут времени только для вас.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3 md:mt-10 md:gap-4">
-            <button onClick={() => scrollToBooking()} className="btn-primary text-sm md:text-base">
+          <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center md:mt-10 md:gap-4">
+            <button onClick={() => scrollToBooking()} className="btn-primary w-full text-base sm:w-auto">
               Записаться на сеанс
               <ArrowDownRight size={18} />
             </button>
-            <a href="#services" className="btn-outline text-sm md:text-base">
+            <a href="#services" className="btn-outline w-full text-base sm:w-auto">
               Программы и цены
             </a>
           </div>
