@@ -19,12 +19,16 @@ export function BookingProvider({ children }: { children: ReactNode }) {
 
   const scrollToBooking = useCallback((v?: BookingIntent) => {
     if (v) setIntent(v);
-    queueMicrotask(() => {
-      const el = document.getElementById("booking");
-      if (!el) return;
-      const navH = window.innerWidth < 768 ? 64 : 80;
-      const y = el.getBoundingClientRect().top + window.scrollY - navH;
-      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el =
+          document.getElementById("booking-form") ??
+          document.getElementById("booking");
+        if (!el) return;
+        const navH = window.innerWidth < 768 ? 72 : 88;
+        const y = el.getBoundingClientRect().top + window.scrollY - navH;
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+      });
     });
   }, []);
 

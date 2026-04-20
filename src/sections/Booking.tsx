@@ -34,19 +34,26 @@ export function Booking() {
   const [time, setTime] = useState<string | undefined>(intent.time);
   const [done, setDone] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const hasInteracted = useRef(false);
 
   function goToStep(next: number) {
+    hasInteracted.current = true;
     setStep(next);
-    queueMicrotask(() => {
-      const el = cardRef.current;
-      if (!el) return;
-      const navH = window.innerWidth < 768 ? 72 : 88;
-      const y = el.getBoundingClientRect().top + window.scrollY - navH;
-      if (window.scrollY > y + 8) {
-        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
-      }
-    });
   }
+
+  useEffect(() => {
+    if (!hasInteracted.current) return;
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = cardRef.current;
+        if (!el) return;
+        const navH = window.innerWidth < 768 ? 72 : 88;
+        const y = el.getBoundingClientRect().top + window.scrollY - navH;
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+      });
+    });
+    return () => cancelAnimationFrame(id);
+  }, [step, done]);
 
   const {
     register,
@@ -131,7 +138,11 @@ export function Booking() {
           </div>
 
           <div className="md:col-span-7">
-            <div ref={cardRef} className="card scroll-mt-20 overflow-hidden p-5 sm:p-6 md:p-10">
+            <div
+              ref={cardRef}
+              id="booking-form"
+              className="card scroll-mt-20 overflow-hidden p-5 sm:p-6 md:p-10"
+            >
               <AnimatePresence mode="wait">
                 {done ? (
                   <Success key="done" onNew={resetAll} service={service?.name} date={date} time={time} />
@@ -255,7 +266,10 @@ function StepSlot({
       <div className="label-kicker">Шаг 2 из 3</div>
       <h3 className="font-display text-2xl text-ink sm:text-3xl">Когда вам удобно?</h3>
 
-      <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-5 px-5 pb-2 sm:-mx-6 sm:scroll-px-6 sm:px-6">
+      <div
+        className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:px-6"
+        style={{ WebkitOverflowScrolling: "touch", scrollBehavior: "smooth" }}
+      >
         {schedule.map((d) => (
           <button
             key={d.date}
@@ -264,7 +278,7 @@ function StepSlot({
               setTime(undefined);
             }}
             className={cn(
-              "flex min-w-[76px] shrink-0 snap-start flex-col items-center rounded-2xl border px-3 py-3 transition active:scale-95",
+              "flex min-w-[76px] shrink-0 flex-col items-center rounded-2xl border px-3 py-3 transition active:scale-95",
               date === d.date
                 ? "border-copper bg-copper text-sand-50 shadow-glow"
                 : "border-ink/10 text-ink hover:border-copper/50",
@@ -297,15 +311,18 @@ function StepSlot({
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
-        <button onClick={onBack} className="btn-ghost">
+      <div className="flex items-center gap-3 pt-4">
+        <button
+          onClick={onBack}
+          className="btn-outline flex-1 sm:flex-none"
+        >
           <ChevronLeft size={16} /> Назад
         </button>
         <button
           disabled={!time}
           onClick={() => time && onPick(date, time)}
           className={cn(
-            "btn-primary",
+            "btn-primary flex-[2] sm:flex-none",
             !time && "opacity-40 cursor-not-allowed pointer-events-none",
           )}
         >
@@ -401,11 +418,19 @@ function StepContacts({
       </label>
       {errors.consent && <p className="text-sm text-coral">{errors.consent.message}</p>}
 
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-        <button type="button" onClick={onBack} className="btn-ghost">
+      <div className="flex items-center gap-3 pt-2">
+        <button
+          type="button"
+          onClick={onBack}
+          className="btn-outline flex-1 sm:flex-none"
+        >
           <ChevronLeft size={16} /> Назад
         </button>
-        <button type="submit" disabled={isSubmitting} className="btn-primary">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="btn-primary flex-[2] sm:flex-none"
+        >
           Отправить заявку <Sparkles size={16} />
         </button>
       </div>
