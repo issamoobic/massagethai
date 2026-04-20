@@ -266,29 +266,32 @@ function StepSlot({
       <div className="label-kicker">Шаг 2 из 3</div>
       <h3 className="font-display text-2xl text-ink sm:text-3xl">Когда вам удобно?</h3>
 
-      <div
-        className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:px-6"
-        style={{ WebkitOverflowScrolling: "touch", scrollBehavior: "smooth" }}
-      >
-        {schedule.map((d) => (
-          <button
-            key={d.date}
-            onClick={() => {
-              setDate(d.date);
-              setTime(undefined);
-            }}
-            className={cn(
-              "flex min-w-[76px] shrink-0 flex-col items-center rounded-2xl border px-3 py-3 transition active:scale-95",
-              date === d.date
-                ? "border-copper bg-copper text-sand-50 shadow-glow"
-                : "border-ink/10 text-ink hover:border-copper/50",
-            )}
-          >
-            <span className="text-[11px] uppercase tracking-widest">{d.weekday}</span>
-            <span className="mt-1 font-display text-2xl leading-none">{d.label.split(" ")[0]}</span>
-            <span className="mt-0.5 text-[10px] opacity-70">{d.label.split(" ")[1]}</span>
-          </button>
-        ))}
+      <div className="relative">
+        <div
+          className="no-scrollbar fade-right-mask flex w-full gap-2 overflow-x-auto pb-2 pr-8"
+          style={{ WebkitOverflowScrolling: "touch", scrollBehavior: "smooth" }}
+        >
+          {schedule.map((d) => (
+            <button
+              key={d.date}
+              onClick={() => {
+                setDate(d.date);
+                setTime(undefined);
+              }}
+              className={cn(
+                "flex min-w-[84px] shrink-0 flex-col items-center rounded-2xl border px-3 py-3 transition active:scale-95",
+                date === d.date
+                  ? "border-copper bg-copper text-sand-50 shadow-glow"
+                  : "border-ink/10 text-ink hover:border-copper/50",
+              )}
+            >
+              <span className="text-[11px] uppercase tracking-widest">{d.weekday}</span>
+              <span className="mt-1 font-display text-2xl leading-none">{d.label.split(" ")[0]}</span>
+              <span className="mt-0.5 text-[10px] opacity-70">{d.label.split(" ")[1]}</span>
+            </button>
+          ))}
+        </div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-sand-100 to-transparent" />
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-4">
@@ -311,10 +314,10 @@ function StepSlot({
         ))}
       </div>
 
-      <div className="flex items-center gap-3 pt-4">
+      <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center">
         <button
           onClick={onBack}
-          className="btn-outline flex-1 sm:flex-none"
+          className="btn-outline w-full sm:w-auto sm:flex-none"
         >
           <ChevronLeft size={16} /> Назад
         </button>
@@ -322,7 +325,7 @@ function StepSlot({
           disabled={!time}
           onClick={() => time && onPick(date, time)}
           className={cn(
-            "btn-primary flex-[2] sm:flex-none",
+            "btn-primary w-full sm:w-auto sm:flex-none",
             !time && "opacity-40 cursor-not-allowed pointer-events-none",
           )}
         >
@@ -418,18 +421,18 @@ function StepContacts({
       </label>
       {errors.consent && <p className="text-sm text-coral">{errors.consent.message}</p>}
 
-      <div className="flex items-center gap-3 pt-2">
+      <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
         <button
           type="button"
           onClick={onBack}
-          className="btn-outline flex-1 sm:flex-none"
+          className="btn-outline w-full sm:w-auto sm:flex-none"
         >
           <ChevronLeft size={16} /> Назад
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="btn-primary flex-[2] sm:flex-none"
+          className="btn-primary w-full sm:w-auto sm:flex-none"
         >
           Отправить заявку <Sparkles size={16} />
         </button>
