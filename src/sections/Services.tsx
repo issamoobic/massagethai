@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Clock, Coins, X, ArrowUpRight, Leaf } from "lucide-react";
 import services from "@/data/services.json";
 import { cn } from "@/lib/cn";
@@ -12,6 +12,7 @@ const categories = ["Все", "Традиционный", "Масляный", "�
 export function Services() {
   const [active, setActive] = useState("Все");
   const [selected, setSelected] = useState<Service | null>(null);
+  const reduceMotion = useReducedMotion();
 
   const filtered = useMemo(
     () => (active === "Все" ? services : services.filter((s) => s.category === active)),
@@ -62,11 +63,21 @@ export function Services() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.45, delay: i * 0.04 }}
+                whileHover={reduceMotion ? undefined : { y: -4, scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{
+                  duration: reduceMotion ? 0.2 : 0.45,
+                  delay: reduceMotion ? 0 : i * 0.04,
+                }}
                 onClick={() => setSelected(s)}
-                className="group relative overflow-hidden rounded-3xl border border-sand-100/10 bg-ink-700/40 p-6 text-left transition hover:border-copper hover:bg-ink-700/60"
+                className="card-hover group relative overflow-hidden rounded-3xl border border-sand-100/10 bg-ink-700/40 p-6 text-left transition hover:border-copper hover:bg-ink-700/60"
               >
-                <div className="flex items-start justify-between">
+                <motion.div
+                  initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: reduceMotion ? 0.15 : 0.28, delay: reduceMotion ? 0 : 0.04 }}
+                  className="flex items-start justify-between"
+                >
                   <span className="chip !border-sand-100/20 !text-sand-100/70">
                     {s.category}
                   </span>
@@ -74,17 +85,27 @@ export function Services() {
                     size={18}
                     className="text-sand-100/40 transition group-hover:text-copper"
                   />
-                </div>
+                </motion.div>
 
-                <div className="mt-10">
+                <motion.div
+                  initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: reduceMotion ? 0.15 : 0.28, delay: reduceMotion ? 0 : 0.09 }}
+                  className="mt-10"
+                >
                   <div className="label-kicker !text-coral">{s.subtitle}</div>
                   <h3 className="mt-2 font-display text-3xl text-sand-100">{s.name}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-sand-200/70">
                     {s.shortDescription}
                   </p>
-                </div>
+                </motion.div>
 
-                <div className="mt-8 flex items-center justify-between">
+                <motion.div
+                  initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: reduceMotion ? 0.15 : 0.28, delay: reduceMotion ? 0 : 0.14 }}
+                  className="mt-8 flex items-center justify-between"
+                >
                   <div className="flex items-center gap-4 text-xs text-sand-200/70">
                     <span className="flex items-center gap-1.5">
                       <Clock size={14} /> {s.duration} мин
@@ -97,7 +118,7 @@ export function Services() {
                     <Coins size={16} />
                     {s.price.toLocaleString("ru-RU")} ₽
                   </div>
-                </div>
+                </motion.div>
               </motion.button>
             ))}
           </AnimatePresence>
@@ -210,11 +231,22 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
 }
 
 function DecorLotus() {
+  const reduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const topGlowY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [6, -10]);
+
   return (
-    <>
-      <div className="pointer-events-none absolute -top-20 left-1/2 h-[400px] w-[1200px] -translate-x-1/2 rounded-full bg-copper/10 blur-3xl" />
+    <div ref={sectionRef} className="pointer-events-none absolute inset-0">
+      <motion.div
+        style={{ y: topGlowY }}
+        className="absolute -top-20 left-1/2 h-[400px] w-[1200px] -translate-x-1/2 rounded-full bg-copper/10 blur-3xl"
+      />
       <svg
-        className="pointer-events-none absolute right-0 top-10 hidden h-64 w-64 text-copper/15 md:block"
+        className="absolute right-0 top-10 hidden h-64 w-64 text-copper/15 md:block"
         viewBox="0 0 200 200"
         fill="currentColor"
       >
@@ -232,6 +264,6 @@ function DecorLotus() {
           <circle r="20" fill="#B87333" />
         </g>
       </svg>
-    </>
+    </div>
   );
 }

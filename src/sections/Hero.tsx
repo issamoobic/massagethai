@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { ArrowDownRight, Sparkles } from "lucide-react";
 import { useBooking } from "@/context/BookingContext";
 import { NextSlotBanner } from "@/components/NextSlotBanner";
@@ -11,6 +12,7 @@ const metrics = [
 
 export function Hero() {
   const { scrollToBooking } = useBooking();
+  const reduceMotion = useReducedMotion();
   return (
     <section
       id="top"
@@ -22,7 +24,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: reduceMotion ? 0.2 : 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="md:col-span-8"
         >
           <span className="label-kicker mb-4 inline-flex items-center gap-2 md:mb-6">
@@ -41,10 +43,15 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center md:mt-10 md:gap-4">
-            <button onClick={() => scrollToBooking()} className="btn-primary w-full text-base sm:w-auto">
+            <motion.button
+              onClick={() => scrollToBooking()}
+              whileTap={{ scale: 0.97 }}
+              whileHover={reduceMotion ? undefined : { y: -1 }}
+              className="btn-primary btn-sheen w-full text-base sm:w-auto"
+            >
               Записаться на сеанс
               <ArrowDownRight size={18} />
-            </button>
+            </motion.button>
             <a href="#services" className="btn-outline w-full text-base sm:w-auto">
               Программы и цены
             </a>
@@ -58,7 +65,11 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          transition={{
+            duration: reduceMotion ? 0.2 : 1,
+            delay: reduceMotion ? 0 : 0.25,
+            ease: [0.22, 1, 0.36, 1],
+          }}
           className="hidden md:col-span-4 md:block"
         >
           <div className="relative">
@@ -70,7 +81,7 @@ export function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
+        transition={{ delay: reduceMotion ? 0 : 0.6, duration: reduceMotion ? 0.2 : 0.8 }}
         className="container-x relative z-10 mt-12 md:mt-28"
       >
         <div className="hairline" />
@@ -134,13 +145,28 @@ function HeroVisual() {
 }
 
 function DecorPatterns() {
+  const reduceMotion = useReducedMotion();
+  const decorRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: decorRef,
+    offset: ["start end", "end start"],
+  });
+  const topGlowY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [8, -14]);
+  const bottomGlowY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [-6, 10]);
+
   return (
-    <>
-      <div className="pointer-events-none absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-coral/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-60 -left-40 h-[520px] w-[520px] rounded-full bg-copper/15 blur-3xl" />
+    <div ref={decorRef} className="pointer-events-none absolute inset-0">
+      <motion.div
+        style={{ y: topGlowY }}
+        className="absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-coral/20 blur-3xl"
+      />
+      <motion.div
+        style={{ y: bottomGlowY }}
+        className="absolute -bottom-60 -left-40 h-[520px] w-[520px] rounded-full bg-copper/15 blur-3xl"
+      />
       {/* золотая линия-декор */}
       <svg
-        className="pointer-events-none absolute right-6 top-24 hidden h-40 w-40 text-copper/50 md:block"
+        className="absolute right-6 top-24 hidden h-40 w-40 text-copper/50 md:block"
         viewBox="0 0 100 100"
         fill="none"
         stroke="currentColor"
@@ -151,6 +177,6 @@ function DecorPatterns() {
         <circle cx="50" cy="50" r="24" />
         <path d="M50 2 L50 98 M2 50 L98 50" />
       </svg>
-    </>
+    </div>
   );
 }
