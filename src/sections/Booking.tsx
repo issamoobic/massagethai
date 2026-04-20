@@ -137,11 +137,11 @@ export function Booking() {
             </div>
           </div>
 
-          <div className="md:col-span-7">
+          <div className="min-w-0 md:col-span-7">
             <div
               ref={cardRef}
               id="booking-form"
-              className="card mx-auto w-full max-w-[760px] scroll-mt-20 overflow-hidden p-5 sm:p-6 md:p-10"
+              className="card mx-auto w-full min-w-0 max-w-[760px] scroll-mt-20 overflow-hidden p-5 sm:p-6 md:p-10"
             >
               <AnimatePresence mode="wait">
                 {done ? (
@@ -270,17 +270,17 @@ function StepSlot({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="mx-auto w-full max-w-[560px] space-y-5"
+      className="mx-auto w-full max-w-[560px] space-y-5 overflow-hidden"
     >
       <div className="text-center sm:text-left">
         <div className="label-kicker">Шаг 2 из 3</div>
         <h3 className="font-display text-2xl text-ink sm:text-3xl">Когда вам удобно?</h3>
       </div>
 
-      <div className="relative">
+      <div className="space-y-2">
         <div
           ref={datesRef}
-          className="no-scrollbar flex w-full gap-2 overflow-x-auto pb-2 pr-16"
+          className="no-scrollbar flex w-full gap-2 overflow-x-auto pb-2"
           style={{ WebkitOverflowScrolling: "touch", scrollBehavior: "smooth" }}
         >
           {schedule.map((d) => (
@@ -303,8 +303,7 @@ function StepSlot({
             </button>
           ))}
         </div>
-        <div className="pointer-events-none absolute inset-y-0 right-14 w-8 bg-gradient-to-l from-sand-100 to-transparent" />
-        <div className="absolute right-0 top-1/2 z-10 flex -translate-y-1/2 gap-1">
+        <div className="flex items-center justify-center gap-2">
           <button
             type="button"
             aria-label="Прокрутить даты влево"
@@ -313,6 +312,7 @@ function StepSlot({
           >
             <ChevronLeft size={16} />
           </button>
+          <span className="text-xs text-ink/55">Листайте даты</span>
           <button
             type="button"
             aria-label="Прокрутить даты вправо"
@@ -324,14 +324,14 @@ function StepSlot({
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
         {day.slots.map((s) => (
           <button
             key={s.time}
             disabled={s.booked}
             onClick={() => setTime(s.time)}
             className={cn(
-              "min-h-[48px] rounded-xl border px-3 py-3 text-base font-medium transition active:scale-95",
+              "min-h-[48px] min-w-0 rounded-xl border px-3 py-3 text-base font-medium transition active:scale-95",
               s.booked
                 ? "border-ink/5 bg-sand-50 text-ink/30 line-through cursor-not-allowed active:scale-100"
                 : time === s.time
@@ -347,7 +347,7 @@ function StepSlot({
       <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center">
         <button
           onClick={onBack}
-          className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border border-ink/25 bg-sand-50 px-5 py-3 text-base font-medium text-ink active:scale-95 sm:w-auto"
+          className="inline-flex min-h-[48px] w-full min-w-0 items-center justify-center gap-2 rounded-full border border-ink/25 bg-sand-50 px-5 py-3 text-base font-medium text-ink active:scale-95 sm:w-auto"
         >
           <ChevronLeft size={16} /> Назад
         </button>
@@ -355,7 +355,7 @@ function StepSlot({
           disabled={!time}
           onClick={() => time && onPick(date, time)}
           className={cn(
-            "inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-base font-medium text-copper active:scale-95 sm:w-auto",
+            "inline-flex min-h-[48px] w-full min-w-0 items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-base font-medium text-copper active:scale-95 sm:w-auto",
             !time && "opacity-40 cursor-not-allowed pointer-events-none",
           )}
         >
