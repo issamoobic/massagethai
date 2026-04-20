@@ -79,16 +79,16 @@ export function Booking() {
   }
 
   return (
-    <section id="booking" className="relative py-24 md:py-36">
+    <section id="booking" className="relative py-16 md:py-36">
       <div className="container-x">
-        <div className="grid gap-12 md:grid-cols-12">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-12">
           <div className="md:col-span-5">
             <span className="label-kicker">Запись</span>
-            <h2 className="mt-3 font-display text-4xl text-ink md:text-6xl md:leading-tight">
+            <h2 className="mt-3 font-display text-[32px] leading-[1.1] text-ink sm:text-4xl md:text-6xl md:leading-tight">
               Три шага.<br />
               <span className="italic text-copper">Никаких звонков.</span>
             </h2>
-            <p className="mt-6 text-lg text-ink/70">
+            <p className="mt-5 text-base text-ink/70 sm:text-lg md:mt-6">
               Выберите программу, удобный слот и оставьте контакт. Мастер пришлёт
               подтверждение и точный адрес в мессенджер в течение пары часов.
             </p>
@@ -117,7 +117,7 @@ export function Booking() {
           </div>
 
           <div className="md:col-span-7">
-            <div className="card p-6 md:p-10">
+            <div className="card overflow-hidden p-5 sm:p-6 md:p-10">
               <AnimatePresence mode="wait">
                 {done ? (
                   <Success key="done" onNew={resetAll} service={service?.name} date={date} time={time} />
@@ -180,8 +180,8 @@ function StepService({
       className="space-y-4"
     >
       <div className="label-kicker">Шаг 1 из 3</div>
-      <h3 className="font-display text-3xl text-ink">Выберите программу</h3>
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
+      <h3 className="font-display text-2xl text-ink sm:text-3xl">Выберите программу</h3>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {services.map((s) => (
           <button
             key={s.id}
@@ -239,9 +239,9 @@ function StepSlot({
       className="space-y-5"
     >
       <div className="label-kicker">Шаг 2 из 3</div>
-      <h3 className="font-display text-3xl text-ink">Когда вам удобно?</h3>
+      <h3 className="font-display text-2xl text-ink sm:text-3xl">Когда вам удобно?</h3>
 
-      <div className="no-scrollbar -mx-6 flex gap-2 overflow-x-auto px-6 pb-2">
+      <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:px-6">
         {schedule.map((d) => (
           <button
             key={d.date}
@@ -263,7 +263,7 @@ function StepSlot({
         ))}
       </div>
 
-      <div className="mt-6 grid grid-cols-3 gap-2 md:grid-cols-4">
+      <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-4">
         {day.slots.map((s) => (
           <button
             key={s.time}
@@ -283,7 +283,7 @@ function StepSlot({
         ))}
       </div>
 
-      <div className="flex items-center justify-between pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
         <button onClick={onBack} className="btn-ghost">
           <ChevronLeft size={16} /> Назад
         </button>
@@ -330,7 +330,7 @@ function StepContacts({
       className="space-y-5"
     >
       <div className="label-kicker">Шаг 3 из 3</div>
-      <h3 className="font-display text-3xl text-ink">Как с вами связаться?</h3>
+      <h3 className="font-display text-2xl text-ink sm:text-3xl">Как с вами связаться?</h3>
 
       <div className="rounded-2xl bg-sand-50 p-4 text-sm text-ink/75">
         <div className="font-display text-ink">{service}</div>
@@ -339,7 +339,7 @@ function StepContacts({
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="label-kicker mb-2 block">Имя</label>
           <input className="input" placeholder="Ваше имя" {...register("name")} />
@@ -374,7 +374,7 @@ function StepContacts({
       </label>
       {errors.consent && <p className="text-xs text-coral">{errors.consent.message}</p>}
 
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
         <button type="button" onClick={onBack} className="btn-ghost">
           <ChevronLeft size={16} /> Назад
         </button>

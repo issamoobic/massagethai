@@ -11,12 +11,12 @@ export function Reviews() {
   const next = () => setI((v) => (v + 1) % reviews.length);
 
   return (
-    <section id="reviews" className="relative py-24 md:py-36">
+    <section id="reviews" className="relative py-16 md:py-36">
       <div className="container-x">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
           <div>
             <span className="label-kicker">Отзывы</span>
-            <h2 className="mt-3 font-display text-4xl text-ink md:text-6xl">
+            <h2 className="mt-3 font-display text-[32px] leading-[1.1] text-ink sm:text-4xl md:text-6xl">
               Что говорят <span className="italic text-copper">гости</span>
             </h2>
           </div>
@@ -26,7 +26,7 @@ export function Reviews() {
           </div>
         </div>
 
-        <div className="mt-14 grid gap-10 md:grid-cols-12 md:gap-16">
+        <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-7">
             <div className="relative min-h-[280px]">
               <AnimatePresence mode="wait">
@@ -38,8 +38,8 @@ export function Reviews() {
                   transition={{ duration: 0.5 }}
                   className="relative"
                 >
-                  <Quote className="absolute -top-6 -left-2 text-copper/30" size={72} />
-                  <p className="font-display text-2xl leading-relaxed text-ink md:text-3xl md:leading-[1.3]">
+                  <Quote className="absolute -top-6 -left-2 text-copper/30" size={56} />
+                  <p className="relative font-display text-xl leading-relaxed text-ink sm:text-2xl md:text-3xl md:leading-[1.3]">
                     «{r.text}»
                   </p>
                   <footer className="mt-8 flex items-center gap-4">

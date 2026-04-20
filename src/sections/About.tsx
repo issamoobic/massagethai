@@ -4,9 +4,9 @@ import master from "@/data/master.json";
 
 export function About() {
   return (
-    <section id="about" className="relative py-24 md:py-40">
+    <section id="about" className="relative py-16 md:py-40">
       <div className="container-x">
-        <div className="grid gap-16 md:grid-cols-12 md:gap-20">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-20">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -25,21 +25,21 @@ export function About() {
             className="md:col-span-7"
           >
             <span className="label-kicker">О мастере</span>
-            <h2 className="mt-4 font-display text-4xl text-ink md:text-6xl md:leading-tight">
+            <h2 className="mt-4 font-display text-[32px] leading-[1.1] text-ink sm:text-4xl md:text-6xl md:leading-tight break-words">
               {master.name}.<br />
               <span className="italic text-ink/60">{master.title}.</span>
             </h2>
 
-            <div className="mt-10 rounded-3xl bg-ink p-8 text-sand-100 md:p-10">
+            <div className="mt-8 rounded-3xl bg-ink p-6 text-sand-100 sm:p-8 md:mt-10 md:p-10">
               <Quote className="text-copper" size={28} />
-              <p className="mt-4 font-display text-2xl italic leading-relaxed md:text-3xl">
+              <p className="mt-4 font-display text-xl italic leading-relaxed sm:text-2xl md:text-3xl">
                 «{master.quote}»
               </p>
             </div>
 
-            <p className="mt-10 text-lg leading-relaxed text-ink/75">{master.bio}</p>
+            <p className="mt-8 text-base leading-relaxed text-ink/75 sm:text-lg md:mt-10">{master.bio}</p>
 
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="mt-8 grid gap-4 sm:gap-6 md:mt-10 md:grid-cols-3">
               {master.philosophy.map((p) => (
                 <div key={p.title} className="rounded-2xl border border-ink/10 bg-sand-100 p-5">
                   <div className="font-display text-xl text-ink">{p.title}</div>
@@ -48,7 +48,7 @@ export function About() {
               ))}
             </div>
 
-            <div className="mt-12 grid gap-10 md:grid-cols-2">
+            <div className="mt-10 grid gap-8 sm:gap-10 md:mt-12 md:grid-cols-2">
               <div>
                 <span className="label-kicker">Техники</span>
                 <ul className="mt-4 space-y-2">
@@ -79,7 +79,7 @@ export function About() {
 
 function Portrait() {
   return (
-    <div className="sticky top-28">
+    <div className="md:sticky md:top-28">
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[32px] bg-ink">
         <div className="absolute inset-0 bg-gradient-to-br from-ink via-ink-700 to-ink/80" />
         {/* силуэт-иллюстрация вместо фото (реальное фото заменит клиент) */}

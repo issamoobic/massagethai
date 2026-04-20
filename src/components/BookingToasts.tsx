@@ -122,7 +122,7 @@ export function BookingToasts() {
   }
 
   return (
-    <div className="pointer-events-none fixed bottom-6 left-4 z-40 md:left-6">
+    <div className="pointer-events-none fixed bottom-24 left-4 z-40 md:bottom-6 md:left-6">
       <AnimatePresence>
         {toast && (
           <motion.div

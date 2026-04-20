@@ -3,11 +3,11 @@ import { MapPin, Phone, Clock, Send, MessageCircle } from "lucide-react";
 
 export function Contacts() {
   return (
-    <section id="contacts" className="section-ink relative overflow-hidden py-24 md:py-36">
+    <section id="contacts" className="section-ink relative overflow-hidden py-16 md:py-36">
       <div className="pointer-events-none absolute -top-40 left-1/2 h-[400px] w-[1200px] -translate-x-1/2 rounded-full bg-coral/10 blur-3xl" />
 
       <div className="container-x relative z-10">
-        <div className="grid gap-12 md:grid-cols-12">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -15,10 +15,10 @@ export function Contacts() {
             className="md:col-span-5"
           >
             <span className="label-kicker">Контакты</span>
-            <h2 className="mt-3 font-display text-4xl text-sand-100 md:text-6xl md:leading-tight">
+            <h2 className="mt-3 font-display text-[32px] leading-[1.1] text-sand-100 sm:text-4xl md:text-6xl md:leading-tight">
               Приходите в <span className="italic text-copper">тишину</span>
             </h2>
-            <p className="mt-6 text-sand-200/75">
+            <p className="mt-5 text-sand-200/75 md:mt-6">
               Точный адрес высылаем после подтверждения записи — это часть нашей камерной
               атмосферы. Ориентир — центр Новосибирска, 5 минут от остановки
               общественного транспорта.
@@ -77,7 +77,7 @@ export function Contacts() {
               <iframe
                 title="Карта Новосибирск, центр"
                 src="https://yandex.ru/map-widget/v1/?ll=82.921500%2C55.030200&z=13&pt=82.921500,55.030200,pm2rdm"
-                className="h-[480px] w-full"
+                className="h-[320px] w-full sm:h-[400px] md:h-[480px]"
                 loading="lazy"
               />
             </div>

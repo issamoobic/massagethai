@@ -19,24 +19,24 @@ export function Services() {
   );
 
   return (
-    <section id="services" className="section-ink relative overflow-hidden py-24 md:py-36">
+    <section id="services" className="section-ink relative overflow-hidden py-16 md:py-36">
       <DecorLotus />
 
       <div className="container-x relative z-10">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
           <div>
             <span className="label-kicker">Программы</span>
-            <h2 className="mt-3 max-w-2xl font-display text-4xl text-sand-100 md:text-6xl md:leading-tight">
+            <h2 className="mt-3 max-w-2xl font-display text-[32px] leading-[1.1] text-sand-100 sm:text-4xl md:text-6xl md:leading-tight">
               Шесть программ. <span className="italic text-copper">Одна философия.</span>
             </h2>
           </div>
-          <p className="max-w-sm text-sand-200/80">
+          <p className="max-w-sm text-sm text-sand-200/80 sm:text-base">
             Длительность от 60 до 120 минут. Короче не делаем — телу нужно время, чтобы
             действительно расслабиться.
           </p>
         </div>
 
-        <div className="no-scrollbar mt-10 flex gap-3 overflow-x-auto pb-2">
+        <div className="no-scrollbar -mx-6 mt-8 flex gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:mt-10 md:px-0">
           {categories.map((c) => (
             <button
               key={c}
@@ -53,7 +53,7 @@ export function Services() {
           ))}
         </div>
 
-        <motion.div layout className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div layout className="mt-8 grid gap-4 sm:gap-6 md:mt-12 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filtered.map((s, i) => (
               <motion.button
@@ -118,7 +118,7 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-ink-900/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-ink-900/70 p-4 py-10 backdrop-blur-sm sm:items-center"
       onClick={onClose}
     >
       <motion.div
@@ -127,7 +127,7 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-2xl overflow-hidden rounded-3xl bg-sand-100 shadow-soft"
+        className="relative my-auto w-full max-w-2xl overflow-hidden rounded-3xl bg-sand-100 shadow-soft"
       >
         <button
           onClick={onClose}
@@ -136,10 +136,12 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
         >
           <X size={18} />
         </button>
-        <div className="bg-ink p-8 text-sand-100 md:p-10">
+        <div className="bg-ink p-6 pr-14 text-sand-100 sm:p-8 md:p-10">
           <div className="label-kicker !text-coral">{service.subtitle}</div>
-          <h3 className="mt-3 font-display text-4xl md:text-5xl">{service.name}</h3>
-          <div className="mt-4 flex items-center gap-5 text-sm text-sand-200/80">
+          <h3 className="mt-3 font-display text-3xl leading-tight sm:text-4xl md:text-5xl">
+            {service.name}
+          </h3>
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-sand-200/80">
             <span className="flex items-center gap-1.5">
               <Clock size={14} /> {service.duration} минут
             </span>
@@ -150,7 +152,7 @@ function ServiceModal({ service, onClose }: { service: Service; onClose: () => v
           </div>
         </div>
 
-        <div className="p-8 md:p-10">
+        <div className="p-6 sm:p-8 md:p-10">
           <p className="text-ink/80">{service.description}</p>
 
           <div className="mt-8 grid gap-8 md:grid-cols-2">

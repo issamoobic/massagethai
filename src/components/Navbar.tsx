@@ -37,28 +37,28 @@ export function Navbar() {
         scrolled ? "bg-sand-50/92 backdrop-blur-md shadow-soft" : "bg-transparent",
       )}
     >
-      <div className="container-x flex items-center justify-between py-4">
+      <div className="container-x flex items-center justify-between gap-3 py-3 md:py-4">
         <a
           href="#top"
           onClick={(e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="flex items-center gap-3"
+          className="flex min-w-0 items-center gap-2 md:gap-3"
         >
           <img
             src="/logo.png"
             alt="Мастерская Мнимения"
             width={48}
             height={48}
-            className="h-12 w-12 select-none"
+            className="h-10 w-10 shrink-0 select-none md:h-12 md:w-12"
             draggable={false}
           />
-          <div className="leading-tight">
-            <div className="font-display text-lg text-ink">
+          <div className="min-w-0 leading-tight">
+            <div className="truncate font-display text-base text-ink md:text-lg">
               Мастерская <span className="italic text-copper-600">Мнимения</span>
             </div>
-            <div className="text-[10px] uppercase tracking-[0.3em] text-ink/60">
+            <div className="hidden truncate text-[10px] uppercase tracking-[0.3em] text-ink/60 sm:block">
               Анфиса Яргина · Thai Bodywork
             </div>
           </div>
