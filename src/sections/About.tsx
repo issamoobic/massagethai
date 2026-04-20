@@ -25,7 +25,7 @@ export function About() {
             className="md:col-span-7"
           >
             <span className="label-kicker">О мастере</span>
-            <h2 className="mt-4 font-display text-[32px] leading-[1.1] text-ink sm:text-4xl md:text-6xl md:leading-tight break-words">
+            <h2 className="mt-4 font-display text-[30px] leading-[1.1] text-ink sm:text-4xl md:text-6xl md:leading-tight">
               {master.name}.<br />
               <span className="italic text-ink/60">{master.title}.</span>
             </h2>

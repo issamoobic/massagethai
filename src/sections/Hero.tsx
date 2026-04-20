@@ -29,7 +29,7 @@ export function Hero() {
             <Sparkles size={12} /> Мастерская Мнимения · Новосибирск
           </span>
 
-          <h1 className="font-display text-[34px] leading-[1.05] text-ink sm:text-[56px] sm:leading-[1] md:text-[88px] lg:text-[104px] md:leading-[0.92] break-words hyphens-auto">
+          <h1 className="font-display text-[30px] leading-[1.1] text-ink sm:text-[52px] sm:leading-[1.02] md:text-[60px] md:leading-[0.98] lg:text-[84px] lg:leading-[0.95] xl:text-[104px] xl:leading-[0.92]">
             Тайские{" "}
             <span className="italic text-copper-600">восстановительные</span>{" "}
             практики <span className="italic">Анфисы</span>.
