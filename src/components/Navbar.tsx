@@ -32,9 +32,9 @@ export function Navbar() {
       initial={{ y: -30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
+        className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-        scrolled ? "bg-sand-100/90 backdrop-blur-md shadow-soft" : "bg-transparent",
+        scrolled ? "bg-sand-50/92 backdrop-blur-md shadow-soft" : "bg-transparent",
       )}
     >
       <div className="container-x flex items-center justify-between py-4">
@@ -44,13 +44,22 @@ export function Navbar() {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="flex items-center gap-2"
+          className="flex items-center gap-3"
         >
-          <LogoMark />
+          <img
+            src="/logo.png"
+            alt="Мастерская Мнимения"
+            width={48}
+            height={48}
+            className="h-12 w-12 select-none"
+            draggable={false}
+          />
           <div className="leading-tight">
-            <div className="font-display text-lg text-ink">Мнимения</div>
+            <div className="font-display text-lg text-ink">
+              Мастерская <span className="italic text-copper-600">Мнимения</span>
+            </div>
             <div className="text-[10px] uppercase tracking-[0.3em] text-ink/60">
-              Thai · Bali · Ritual
+              Анфиса Яргина · Thai Bodywork
             </div>
           </div>
         </a>
@@ -140,18 +149,3 @@ export function Navbar() {
   );
 }
 
-function LogoMark() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" className="text-copper">
-      <circle cx="18" cy="18" r="17" fill="#1E3A4C" />
-      <path
-        d="M9 23c0-6 4-11 9-11s9 5 9 11"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <circle cx="18" cy="12" r="2.4" fill="#D4806A" />
-    </svg>
-  );
-}

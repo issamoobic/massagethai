@@ -4,12 +4,23 @@ export function Footer() {
       <div className="container-x py-12">
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
-            <div className="font-display text-2xl text-ink">
-              Мастерская тайских массажных практик
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo.png"
+                alt="Мастерская Мнимения"
+                className="h-14 w-14"
+                draggable={false}
+              />
+              <div className="font-display text-2xl text-ink leading-tight">
+                Мастерская <span className="italic text-copper-600">Мнимения</span>
+                <div className="text-xs uppercase tracking-[0.25em] text-ink/60 mt-1">
+                  Анфиса Яргина · Тайские восстановительные практики
+                </div>
+              </div>
             </div>
-            <p className="mt-3 max-w-sm text-sm text-ink/60">
-              Авторская студия одного мастера. Новосибирск, 2026. Все материалы сайта —
-              не являются публичной офертой.
+            <p className="mt-4 max-w-sm text-sm text-ink/60">
+              Авторская мастерская одного мастера. Новосибирск, 2026.
+              Все материалы сайта не являются публичной офертой.
             </p>
           </div>
 

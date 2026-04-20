@@ -26,18 +26,18 @@ export function Hero() {
           className="md:col-span-8"
         >
           <span className="label-kicker mb-6 inline-flex items-center gap-2">
-            <Sparkles size={12} /> Мастерская · Новосибирск
+            <Sparkles size={12} /> Мастерская Мнимения · Новосибирск
           </span>
 
           <h1 className="font-display text-5xl leading-[0.95] text-ink md:text-[104px] md:leading-[0.92]">
-            Тайские массажные <br />
-            <span className="italic text-copper">практики</span>,<br />
-            возвращение <span className="italic">к&nbsp;себе</span>.
+            Тайские <br />
+            <span className="italic text-copper-600">восстановительные</span><br />
+            практики <span className="italic">Анфисы</span>.
           </h1>
 
           <p className="mt-8 max-w-xl text-lg text-ink/70 md:text-xl">
-            Авторская студия одного мастера. Нет конвейера, нет соседних кабинетов —
-            только тишина, аутентичные техники и 90+ минут времени только для вас.
+            Авторская мастерская одного мастера. Тайский массаж, балийский ойл-ритуал,
+            травяные мешочки — в тишине, без конвейера, 90+ минут времени только для вас.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -90,42 +90,43 @@ export function Hero() {
 function HeroVisual() {
   return (
     <div className="relative mx-auto aspect-[3/4] w-full max-w-sm">
-      {/* фоновый коралловый blob */}
+      {/* мягкое лавандовое сияние сзади */}
       <motion.div
-        animate={{ rotate: [0, 6, 0] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute inset-0 rounded-[40%_60%_42%_58%/48%_38%_62%_52%] bg-coral/80 blur-[1px]"
+        animate={{ rotate: [0, 8, 0], scale: [1, 1.04, 1] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-4 rounded-[44%_56%_42%_58%/48%_38%_62%_52%] bg-coral/40 blur-2xl"
       />
+      {/* золотая аура */}
       <motion.div
-        animate={{ rotate: [0, -8, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute inset-6 rounded-[58%_42%_60%_40%/40%_60%_40%_60%] bg-ink"
+        animate={{ scale: [1, 1.03, 1] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-10 rounded-full bg-copper/15 blur-3xl"
       />
-      {/* медное кольцо */}
-      <div className="absolute inset-10 rounded-full border border-copper/60" />
-      <div className="absolute inset-14 rounded-full border border-copper/30" />
-      {/* лого-иероглиф стилизованный */}
+
+      {/* декоративные золотые круги */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-6 rounded-full border border-copper/25"
+      />
+      <div className="absolute inset-14 rounded-full border border-copper/15" />
+
+      {/* логотип бренда без подложки */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <svg width="140" height="140" viewBox="0 0 140 140" className="text-sand-100">
-          <circle cx="70" cy="70" r="4" fill="currentColor" />
-          <path
-            d="M70 20 L70 60 M70 80 L70 120 M20 70 L60 70 M80 70 L120 70"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M70 50 Q45 70 70 90 Q95 70 70 50 Z"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.2"
-          />
-        </svg>
+        <motion.img
+          src="/logo.png"
+          alt="Мастерская Мнимения"
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="h-72 w-72 drop-shadow-[0_15px_45px_rgba(59,27,78,0.45)]"
+          draggable={false}
+        />
       </div>
-      <div className="absolute -right-4 top-10 animate-float rounded-full bg-sand-100 px-4 py-2 text-xs uppercase tracking-widest text-ink shadow-soft">
+
+      <div className="absolute -right-4 top-10 animate-float rounded-full bg-sand-50 px-4 py-2 text-xs uppercase tracking-widest text-ink shadow-soft">
         Nuad Boran
       </div>
-      <div className="absolute -left-4 bottom-16 animate-float rounded-full bg-copper px-4 py-2 text-xs uppercase tracking-widest text-sand-50 shadow-glow">
+      <div className="absolute -left-4 bottom-16 animate-float rounded-full bg-copper px-4 py-2 text-xs uppercase tracking-widest text-ink shadow-glow">
         Luk Pra Kob
       </div>
     </div>
@@ -135,11 +136,11 @@ function HeroVisual() {
 function DecorPatterns() {
   return (
     <>
-      <div className="pointer-events-none absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-coral/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-60 -left-40 h-[520px] w-[520px] rounded-full bg-copper/10 blur-3xl" />
-      {/* медная линия-декор */}
+      <div className="pointer-events-none absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-coral/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-60 -left-40 h-[520px] w-[520px] rounded-full bg-copper/15 blur-3xl" />
+      {/* золотая линия-декор */}
       <svg
-        className="pointer-events-none absolute right-6 top-24 hidden h-40 w-40 text-copper/40 md:block"
+        className="pointer-events-none absolute right-6 top-24 hidden h-40 w-40 text-copper/50 md:block"
         viewBox="0 0 100 100"
         fill="none"
         stroke="currentColor"

@@ -99,16 +99,9 @@ function Portrait() {
         <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-sand-100">
           <div>
             <div className="label-kicker !text-sand-400">портрет</div>
-            <div className="font-display text-xl">{/* placeholder text */}Мнимения</div>
+            <div className="font-display text-xl">Анфиса Яргина</div>
           </div>
           <div className="font-display text-4xl text-copper">8+</div>
-        </div>
-      </div>
-
-      <div className="mt-6 rounded-2xl border border-copper/40 bg-sand-100 p-4 text-sm text-ink/70">
-        <span className="label-kicker">Примечание</span>
-        <div className="mt-2">
-          Заменить на живое фото мастера — карточка сохранит пропорции и стиль рамки.
         </div>
       </div>
     </div>
