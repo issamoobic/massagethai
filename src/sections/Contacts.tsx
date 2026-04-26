@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, Send, MessageCircle } from "lucide-react";
+import site from "@/data/site.json";
 
 export function Contacts() {
   return (
@@ -32,15 +33,15 @@ export function Contacts() {
                 Ежедневно 10:00–22:00 · по записи
               </Item>
               <Item icon={<Phone size={18} />} label="Телефон">
-                <a href="tel:+79831234567" className="hover:text-copper">
-                  +7 (983) 123-45-67
+                <a href={`tel:${site.contacts.phoneRaw}`} className="hover:text-copper">
+                  {site.contacts.phoneDisplay}
                 </a>
               </Item>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-3">
               <a
-                href="https://vk.com/mnimenya_massage"
+                href={site.contacts.vkUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="btn bg-sand-100 text-ink hover:bg-copper hover:text-sand-50"
@@ -48,7 +49,7 @@ export function Contacts() {
                 <MessageCircle size={16} /> Сообщество ВК
               </a>
               <a
-                href="https://t.me/"
+                href={site.contacts.telegramUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="btn border border-sand-100/30 text-sand-100 hover:border-copper hover:text-copper"
@@ -56,7 +57,7 @@ export function Contacts() {
                 <Send size={16} /> Telegram
               </a>
               <a
-                href="https://wa.me/79831234567"
+                href={site.contacts.whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="btn border border-sand-100/30 text-sand-100 hover:border-copper hover:text-copper"

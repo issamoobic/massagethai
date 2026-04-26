@@ -6,7 +6,8 @@ import { z } from "zod";
 import { Check, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import services from "@/data/services.json";
 import { generateSchedule } from "@/lib/schedule";
-import { saveBooking } from "@/lib/storage";
+import { isSlotBooked, saveBooking } from "@/lib/storage";
+import { syncBookingToGoogleCalendar } from "@/lib/calendarSync";
 import { useBooking } from "@/context/BookingContext";
 import { cn } from "@/lib/cn";
 
@@ -33,6 +34,7 @@ export function Booking() {
   const [date, setDate] = useState<string | undefined>(intent.date);
   const [time, setTime] = useState<string | undefined>(intent.time);
   const [done, setDone] = useState(false);
+  const [calendarWarning, setCalendarWarning] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const hasInteracted = useRef(false);
 
@@ -81,12 +83,15 @@ export function Booking() {
     setTime(undefined);
     setStep(0);
     setDone(false);
+    setCalendarWarning(null);
     setIntent({});
     reset();
   }
 
-  function onSubmitContacts(data: ContactsForm) {
+  async function onSubmitContacts(data: ContactsForm) {
     if (!service || !date || !time) return;
+    setCalendarWarning(null);
+
     saveBooking({
       serviceId: service.id,
       serviceName: service.name,
@@ -96,6 +101,21 @@ export function Booking() {
       phone: data.phone,
       comment: data.comment,
     });
+
+    const syncResult = await syncBookingToGoogleCalendar({
+      serviceName: service.name,
+      date,
+      time,
+      durationMinutes: service.duration,
+      name: data.name,
+      phone: data.phone,
+      comment: data.comment,
+    });
+
+    if (!syncResult.ok) {
+      setCalendarWarning("Заявка сохранена, но не отправлена в Google Календарь. Проверьте интеграцию.");
+    }
+
     setDone(true);
   }
 
@@ -145,7 +165,14 @@ export function Booking() {
             >
               <AnimatePresence mode="wait">
                 {done ? (
-                  <Success key="done" onNew={resetAll} service={service?.name} date={date} time={time} />
+                  <Success
+                    key="done"
+                    onNew={resetAll}
+                    service={service?.name}
+                    date={date}
+                    time={time}
+                    warning={calendarWarning}
+                  />
                 ) : step === 0 ? (
                   <StepService
                     key="s0"
@@ -325,23 +352,26 @@ function StepSlot({
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-        {day.slots.map((s) => (
-          <button
-            key={s.time}
-            disabled={s.booked}
-            onClick={() => setTime(s.time)}
-            className={cn(
-              "min-h-[48px] min-w-0 rounded-xl border px-3 py-3 text-base font-medium transition active:scale-95",
-              s.booked
-                ? "border-ink/5 bg-sand-50 text-ink/30 line-through cursor-not-allowed active:scale-100"
-                : time === s.time
-                  ? "border-ink bg-ink text-sand-100"
-                  : "border-ink/15 text-ink hover:border-copper",
-            )}
-          >
-            {s.time}
-          </button>
-        ))}
+        {day.slots.map((s) => {
+          const isTaken = s.booked || isSlotBooked(day.date, s.time);
+          return (
+            <button
+              key={s.time}
+              disabled={isTaken}
+              onClick={() => setTime(s.time)}
+              className={cn(
+                "min-h-[48px] min-w-0 rounded-xl border px-3 py-3 text-base font-medium transition active:scale-95",
+                isTaken
+                  ? "border-ink/5 bg-sand-50 text-ink/30 line-through cursor-not-allowed active:scale-100"
+                  : time === s.time
+                    ? "border-ink bg-ink text-sand-100"
+                    : "border-ink/15 text-ink hover:border-copper",
+              )}
+            >
+              {s.time}
+            </button>
+          );
+        })}
       </div>
 
       <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center">
@@ -445,7 +475,7 @@ function StepContacts({
         <input type="checkbox" className="mt-1 h-5 w-5 accent-copper" {...register("consent")} />
         <span>
           Согласен(а) с{" "}
-          <a href="#" className="text-copper underline">
+          <a href="#policy" className="text-copper underline">
             политикой обработки персональных данных
           </a>
           .
@@ -477,11 +507,13 @@ function Success({
   service,
   date,
   time,
+  warning,
   onNew,
 }: {
   service?: string;
   date?: string;
   time?: string;
+  warning?: string | null;
   onNew: () => void;
 }) {
   return (
@@ -503,6 +535,11 @@ function Success({
           {service} — {date} в {time}. Мастер свяжется с вами для подтверждения и пришлёт
           точный адрес.
         </p>
+        {warning && (
+          <p className="mt-3 max-w-md rounded-xl border border-coral/30 bg-coral/10 px-4 py-2 text-sm text-ink/70">
+            {warning}
+          </p>
+        )}
       </div>
       <button onClick={onNew} className="btn-outline">
         Записаться ещё

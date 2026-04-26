@@ -94,6 +94,23 @@ massagethai/
 - Плейсхолдер-портрет в `About.tsx` — на фото мастера (сохранить пропорции 4:5, рамка сохранится).
 - Яндекс-карта в `Contacts.tsx` — подставить реальные координаты в `src=`.
 
+## Интеграция с Google Календарём
+
+После отправки формы сайт может создавать событие в Google Календаре через серверный endpoint `api/google-calendar-sync.ts`.
+
+Нужно добавить переменные окружения в Vercel:
+
+- `GOOGLE_SERVICE_ACCOUNT_EMAIL` — email service account
+- `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` — private key (с `\n` вместо переносов строк)
+- `GOOGLE_CALENDAR_ID` — ID календаря
+- `BOOKING_TIMEZONE` — например `Asia/Novosibirsk`
+
+Также:
+
+1. В Google Cloud включить Calendar API.
+2. Выдать service account доступ к календарю (как редактор).
+3. Сделать деплой и проверить, что после заявки в календаре появляется событие.
+
 ## Следующие шаги (вне демо)
 
 - Бэкенд (Node + SQLite/Postgres) для персистентных заявок

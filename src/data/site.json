@@ -1,0 +1,19 @@
+{
+  "brand": {
+    "name": "Мастерская Мнимения",
+    "owner": "Анфиса Яргина",
+    "city": "Новосибирск"
+  },
+  "contacts": {
+    "phoneRaw": "+79831234567",
+    "phoneDisplay": "+7 (983) 123-45-67",
+    "telegramUrl": "https://t.me/mnimenya_massage",
+    "whatsappUrl": "https://wa.me/79831234567",
+    "vkUrl": "https://vk.com/mnimenya_massage"
+  },
+  "legal": {
+    "entity": "ИП Анфиса Яргина",
+    "inn": "540000000000",
+    "ogrnip": "000000000000000"
+  }
+}

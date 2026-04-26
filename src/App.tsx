@@ -6,6 +6,7 @@ import { Services } from "./sections/Services";
 import { Booking } from "./sections/Booking";
 import { Reviews } from "./sections/Reviews";
 import { FAQ } from "./sections/FAQ";
+import { Legal } from "./sections/Legal";
 import { Contacts } from "./sections/Contacts";
 import { Footer } from "./sections/Footer";
 import { Chatbot } from "./components/Chatbot";
@@ -24,6 +25,7 @@ export default function App() {
           <Booking />
           <Reviews />
           <FAQ />
+          <Legal />
           <Contacts />
         </main>
         <Footer />
